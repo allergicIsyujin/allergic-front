@@ -376,20 +376,11 @@ const styles = StyleSheet.create({
     marginLeft: '5%',
     justifyContent: 'space-around'
   },
-  save: {         // 좌측으로부터 90px
-    flexDirection: 'row',            // 가로 정렬
-    alignItems: 'center',            // 중앙 정렬
-    width: 150,                      // 너비 130px
-    height: 50,                      // 높이 50px
-    backgroundColor: '#0D7FFB',      // 배경색 파란색
-    borderRadius: 10,                // 둥근 모서리 10px
-    paddingHorizontal: 10,
+  save: {
     justifyContent:'space-evenly',
-    marginLeft: 5
   },
   name: {
     fontSize: 16,
     fontWeight: '600',
-
   },
 });

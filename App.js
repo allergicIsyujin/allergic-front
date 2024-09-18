@@ -1,7 +1,6 @@
 
 //스택형식으로 @react-navigation/native, @react-navigation/stack 두개 install해서 진행시킴
 import * as React from 'react';
-import { Text, View, Button, StyleSheet} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useState, createContext } from 'react';
@@ -17,7 +16,6 @@ import Login from './screens/Login';
 import BeforeMain from './screens/BeforeMain';
 import SignUp from './screens/SignUp'
 import MainPage from './screens/MainPage'
-import Search from './screens/Search'
 
 const Stack = createStackNavigator();
 
@@ -48,11 +46,6 @@ export default function App() {
         <Stack.Screen
           name="MainPage"
           component={MainPage}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name='Search'
-          component={Search}
           options={{ headerShown: false }}
         />
         <Stack.Screen
