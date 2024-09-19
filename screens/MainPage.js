@@ -132,11 +132,12 @@ export default function MainPage() {
       </Modal>) : (null)}
           <ImageBackground style={styles.backgroundImg} source={require('./assets/img/background.png')} resizeMode="cover">
           </ImageBackground>
-          <View style={styles.unMainBox}></View>
           <View style={[styles.logo, { height: 62 }]}>
             <LogoSvg height={62}></LogoSvg>
             <Text style={styles.logoText}>Allergic</Text>
           </View>
+          <View style={styles.unMainBox}></View>
+          
           
           <View style={[styles.main]}>
               <View style={styles.mainBox}>
@@ -267,9 +268,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width:'100vw',
-    height:'100vh'
+    height:'100vh',
+    position:'relative'
   },
   backgroundImg: {
+    height:'110%',
     flex:1,
   },
   unMainBox:{
@@ -277,10 +280,10 @@ const styles = StyleSheet.create({
     height:'57%',
   },
   logo: {
-    position:'absolute',
+    width:'50%',
+    zIndex:10,
     flexDirection:'row',
-    left: '5%',
-    top:'38%'
+    marginLeft:'5%'
   },
   logoText:{
     position: 'relative',
