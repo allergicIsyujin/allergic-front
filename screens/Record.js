@@ -5,7 +5,6 @@ import { Text, View, StyleSheet, TouchableOpacity, Image, ScrollView, TurboModul
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import { useRoute } from '@react-navigation/native';
-
 import Footer from './components/footer.js'
 import Arrow_back from './assets/img/arrow_back.svg'
 
@@ -46,6 +45,7 @@ export default function Record() {
 //받은 데이터를 foodList에 추가후 DB에 저장, 저장 후 저장한 데이터들을 모두 가져와서 보여주기
 const goToResult = ((foodId)=>{
   navigation.navigate('Result',  {foodList, foodId : foodId})
+  
 })
 
     return (
@@ -64,21 +64,30 @@ const goToResult = ((foodId)=>{
             <Arrow_back />
           </TouchableOpacity>
           <ScrollView contentContainerStyle={styles.scrollView} style={styles.RecordList}>
-              {foodList && foodList.length > 0 ? foodList.map((food) => ( //추후foodList가 아닌 DB에 있는것들을 가져와서 할 예정
-                <View
-                  key={food.id}
-                  style={[
-                    styles.RecordBox,{backgroundColor:food.backgroundColor}
-                  ]}
-                >
-                  <Text style={styles.RecordBoxText}>{food.name}</Text>
-                  <TouchableOpacity style={styles.View} onPress={() => goToResult(food.id)}>
-                    <Text>상세보기</Text>
-                  </TouchableOpacity>
+              {foodList && foodList.length > 0 ? foodList.map((food) => (
+              <View
+              key={food.id}
+              style={[
+                styles.RecordBox,{backgroundColor:food.backgroundColor}
+              ]}
+            >
+              <Text style={styles.RecordBoxText}>{food.name}</Text>
+              <TouchableOpacity style={styles.View} onPress={() => goToResult(food.id)}>
+                <Text>상세보기</Text>
+              </TouchableOpacity>
 
-                </View>
+            </View>
               )) : (<Text style={styles.noRecord}>아직 기록이 없습니다.</Text>)}
-
+                {foodList.length %2==1 ? 
+                <View
+                key={foodList.length+1}
+                style={[
+                  styles.RecordBox
+                ]}
+              >
+              </View>
+                 : null}
+                
           </ScrollView>
         </View>
       </View>
@@ -111,10 +120,10 @@ const styles = StyleSheet.create({
     width: '100%',
     borderTopRightRadius: 80,
     height: '80%',
+    alignItems:'center'
   },
   mainbox: {
-    width:'90%',
-    marginLeft:'8%',
+    width:'95%',
     marginTop: '5%',
   },
   RecordList: {
@@ -126,6 +135,7 @@ const styles = StyleSheet.create({
     width: '100%',
     flexWrap: 'wrap',
     flexDirection: 'row',
+    justifyContent:'space-around',
     flexGrow: 2,
   },
   RecordBox:{
@@ -134,8 +144,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     flexDirection: 'column',
     alignItems: 'center',
-    marginBottom: '5%',
-    marginRight: '5%',
+    marginBottom:20
   },
   View:{
     width:80,

@@ -74,6 +74,9 @@ export default function MainPage() {
   return (
                        
     <View style={{flex:1}}>
+      
+    
+      <LinearGradient style={styles.container} colors={['#51CE54', '#0D7FFB']}>
       <StatusBar style="auto" />
       {isModalVisible ? (<Modal
         transparent={true}
@@ -110,7 +113,7 @@ export default function MainPage() {
                                 key={item} 
                                     style={[
                                         styles.textdescription, 
-                                        notIngredients.includes(item) && { color: 'red' } // notIngredients가 포함된 경우 빨간색으로 표시
+                                        notIngredients.includes(item) && { color: 'red' } 
                                     ]}
                                 >
                                     {item}
@@ -127,9 +130,6 @@ export default function MainPage() {
           </View>
         </TouchableWithoutFeedback>
       </Modal>) : (null)}
-    
-      <LinearGradient style={styles.container} colors={['#51CE54', '#0D7FFB']}>
-      
           <ImageBackground style={styles.backgroundImg} source={require('./assets/img/background.png')} resizeMode="cover">
           </ImageBackground>
           <View style={styles.unMainBox}></View>
@@ -266,7 +266,8 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    width:'100%',
+    width:'100vw',
+    height:'100vh'
   },
   backgroundImg: {
     flex:1,
