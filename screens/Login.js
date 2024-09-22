@@ -12,7 +12,7 @@ export default function Login() {
     const { settingId } = useContext(UserContext);
     const {IP} = useContext(IPContext);
     const handleSubmit=()=>{
-     fetch(`http://${IP}/login?userid=${encodeURIComponent(id)}&userpassword=${encodeURIComponent(password)}`)
+     fetch(`http://${IP}/user/login?userid=${encodeURIComponent(id)}&userpassword=${encodeURIComponent(password)}`)
       .then(response => response.json())
         .then(json => {
           console.log(json.userId);

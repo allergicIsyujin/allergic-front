@@ -22,7 +22,7 @@ export default function Jnformation() {
     const [backgroundColor, setBackgroundColor] = useState(1); // 배경색 상태 (1: 초록색-파란색, 0: 빨간색)
     const [descriptions, setDescriptions] = useState([]); // 재료 목록 상태
     const [notIngredients, setNotIngredients] = useState([]); // 제외 재료 목록 상태
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [isModalVisible, setIsModalVisible] = useState(true);
 
     useEffect(() => {
@@ -46,7 +46,7 @@ export default function Jnformation() {
             if (photoUrl) {
                 try {
                     const base64Image = await getBase64(photoUrl); // 이미지 URL을 base64로 변환
-                    const response = await fetch(`http://${IP}/base64`, {
+                    const response = await fetch(`http://${IP}/image/base64`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -58,8 +58,9 @@ export default function Jnformation() {
                         }),
                     });
                     const json = await response.json();
+                    console.log(json)
                     setFoodName(json.result.foodName); // 음식 이름 설정
-
+                    console.log(foodName)
                     // "ok" 값에 따라 배경색 설정
                     if (json.result.ok === "O") {
                         setBackgroundColor(1);
@@ -89,7 +90,7 @@ export default function Jnformation() {
 
     const save = () => {
         // 이미지를 서버에 저장 요청
-        fetch(`http://${IP}/saveImage?userId=${encodeURIComponent(userId)}`)
+        fetch(`http://${IP}/image/saveImage?userId=${encodeURIComponent(userId)}`)
             .then(response => response.json())
             .then(json => {
                 navigation.navigate('Record');

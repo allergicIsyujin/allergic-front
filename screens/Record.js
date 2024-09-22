@@ -19,7 +19,7 @@ export default function Record() {
   let a=0;
   useEffect(() => {
     // 서버에서 데이터를 가져오는 함수
-    fetch(`http://${IP}/foodRecord?userid=${encodeURIComponent(userId)}`)
+    fetch(`http://${IP}/food/foodRecord?userid=${encodeURIComponent(userId)}`)
     .then(response => response.json())
       .then(json => {
         if (json && json.length > 0) {

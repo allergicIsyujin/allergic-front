@@ -38,10 +38,6 @@ export default function footer(props){
 
 const styles = StyleSheet.create({
   footer: {
-    shadowColor: 'rgba(0, 0, 255, 1)', // 진한 파란색 그림자
-    shadowOffset: { width: 0, height: -6 }, // 수평, 수직 오프셋
-    shadowOpacity: 1, // 최대 불투명도
-    elevation: 10,
     position: 'absolute',
     bottom: 0,
     width: '100%',

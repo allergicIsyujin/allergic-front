@@ -10,7 +10,7 @@ export default function SignUp() {
   const [password,setpassword]=useState('');
   const [repassword,setrepassword]=useState('');
   const signUp=()=>{
-    fetch(`http://${IP}/signup?userId=${encodeURIComponent(id)}&userPs=${encodeURIComponent(password)}&userRPs=${encodeURIComponent(repassword)}`)
+    fetch(`http://${IP}/user/signup?userId=${encodeURIComponent(id)}&userPs=${encodeURIComponent(password)}&userRPs=${encodeURIComponent(repassword)}`)
      .then(response => response.json())
        .then(json => {
          if(json.userId){

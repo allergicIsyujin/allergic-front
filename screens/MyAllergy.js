@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../contexts.js';
 import {IPContext} from '../contexts.js';
 
-import { Text, View, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity,Dimensions, Image, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRoute } from '@react-navigation/native';
 
@@ -11,6 +11,8 @@ import Footer from './components/footer.js'
 import Arrow_back from './assets/img/arrow_back.svg'
 import LogoSvg from './assets/img/logo.svg';
 import Btn from './components/Button.js'
+
+const { width, height } = Dimensions.get('window');
 
 export default function MyAllergy({ navigation }) {
   const route = useRoute(); //useRoute로 등록했던 알러지정보들을 받아옴.
@@ -47,7 +49,7 @@ export default function MyAllergy({ navigation }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const respond = await fetch(`http://${IP}/myAllergy`, {
+        const respond = await fetch(`http://${IP}/allergy/myAllergy`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -153,7 +155,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white', // 배경색 흰색
         borderTopRightRadius: 80, // 오른쪽 위 모서리 둥글게
         width:'100%', // 너비 360px
-        height:'45%',
+        height:height*0.5,
       },
       mainImg:{
         marginVertical: '3%', // 위아래 여백 10px

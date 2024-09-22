@@ -26,7 +26,7 @@ export default function AddAllergy() {
       try {
         const updatedBool = [...bool];
         const updatedAllergyList = [...allergyList];
-        fetch(`http://${IP}/newAllergy?userId=${userId}`)
+        fetch(`http://${IP}/allergy/newAllergy?userId=${userId}`)
           .then(response => response.json())
           .then(data => {
             console.log(data);
@@ -49,7 +49,7 @@ export default function AddAllergy() {
           })
           .then(async () => {
             try {
-              const respond = await fetch(`http://${IP}/myAllergy`, {
+              const respond = await fetch(`http://${IP}/allergy/myAllergy`, {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
@@ -108,7 +108,7 @@ export default function AddAllergy() {
           i++;
         }
       });
-      const respond = await fetch(`http://${IP}/save/allergy`, {
+      const respond = await fetch(`http://${IP}/allergy/save`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -283,14 +283,14 @@ const styles = StyleSheet.create({
   modalContent: {
     backgroundColor: '#fff',
     width: '78%',
-    height: '28%',
+    paddingBottom:40,
+    paddingTop:40,
     display: 'flex',
     flexDirection: 'column',
     borderRadius: 10,
     alignItems: 'center',
   },
   modalText: {
-    marginTop: '11%',
     marginBottom: '8%',
     fontSize: 16,
     fontWeight: '700',

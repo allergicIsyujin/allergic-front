@@ -3,7 +3,7 @@ import { UserContext } from '../contexts.js';
 import {IPContext} from '../contexts.js';
 
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, BackHandler, ImageBackground, Modal, TextInput, Platform,  TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, BackHandler, ImageBackground, Dimensions, Modal, TextInput, Platform,  TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient'
 import {Image} from 'react-native';
 import LogoSvg from './assets/img/logo.svg';
@@ -16,6 +16,8 @@ import Yes from './assets/img/yes.svg'
 import X from './assets/img/X.svg'
 import No from './assets/img/no.svg'
 import Footer from './components/footer.js'
+
+const { width, height } = Dimensions.get('window');
 
 export default function MainPage() {
   const navigation = useNavigation();
@@ -295,7 +297,7 @@ const styles = StyleSheet.create({
   },
   main:{
     flex:1.3,
-    height:360,
+    height:height*0.47,
     bottom:'8%',
     width:'100%',
     backgroundColor: "#FFF",
