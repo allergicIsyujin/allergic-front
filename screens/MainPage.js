@@ -11,6 +11,7 @@ import ReTake from './assets/img/Retake.svg';
 import SearchSvg from './assets/img/find.svg'
 import { useNavigation } from '@react-navigation/native';
 import Loading from './roading.js'
+import Bg from './assets/img/background.svg';
 
 import Yes from './assets/img/yes.svg'
 import X from './assets/img/X.svg'
@@ -132,8 +133,14 @@ export default function MainPage() {
           </View>
         </TouchableWithoutFeedback>
       </Modal>) : (null)}
-          <ImageBackground style={styles.backgroundImg} source={require('./assets/img/background.png')} resizeMode="cover">
-          </ImageBackground>
+      <View style={styles.backgroundImg}>
+        <Bg />
+      </View>
+      <View style={styles.BgUnbox}>
+      </View>
+      <TouchableOpacity style={styles.guidelines}>
+        <Text>?</Text>
+      </TouchableOpacity>
           <View style={[styles.logo, { height: 62 }]}>
             <LogoSvg height={62}></LogoSvg>
             <Text style={styles.logoText}>Allergic</Text>
@@ -181,13 +188,14 @@ export default function MainPage() {
                               />
                             </View>
                            
-                      
+                      { text.length > 0 ? 
                       <TouchableOpacity
                         // 글자 삭제
                         onPress={()=>{setText('')}}
                       >
                       <Image source={require('./assets/img/X.png')}/>{/* class="smallImg" id="inputDelete" */}
-                      </TouchableOpacity>
+                      </TouchableOpacity> : null
+                      }
                   </View>
               </View>
           </View>
@@ -204,6 +212,17 @@ export default function MainPage() {
 
 
 const styles = StyleSheet.create({
+  guidelines:{
+    display:'flex',
+    
+    width:40,
+    height:40,
+    backgroundColor:'#FFFFFF',
+    borderRadius:100,
+    position:'absolute',
+    right:20,
+    top:50
+  },
   text:{
     fontWeight:'700',
     textAlign:'center',
@@ -255,6 +274,9 @@ const styles = StyleSheet.create({
     top:20,
     right:20
   },
+  BgUnbox:{
+    height:'36%'
+  },
   noBox:{
     marginTop:50,
     marginLeft:20,
@@ -274,8 +296,7 @@ const styles = StyleSheet.create({
     position:'relative'
   },
   backgroundImg: {
-    height:'110%',
-    flex:1,
+    position:'absolute'
   },
   unMainBox:{
     width:'100%',

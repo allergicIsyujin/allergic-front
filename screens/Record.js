@@ -7,6 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useRoute } from '@react-navigation/native';
 import Footer from './components/footer.js'
 import Arrow_back from './assets/img/arrow_back.svg'
+import Bg from './assets/recordImg/header-img.svg';
 
 export default function Record() {
   const navigation = useNavigation();
@@ -52,7 +53,7 @@ const goToResult = ((foodId)=>{
       <View style={styles.container}>
       <LinearGradient colors={['#51CE54', '#0D7FFB']} style={styles.gradient}>
       <View>
-          <Image style={styles.headerImg} source={require('./assets/recordImg/header-img.png')} />
+          <Bg />
           <Text style={styles.title}>기록</Text>
       </View>
       <View style={styles.main}>

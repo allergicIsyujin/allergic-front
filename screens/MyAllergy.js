@@ -5,6 +5,7 @@ import {IPContext} from '../contexts.js';
 import { Text, View, StyleSheet, TouchableOpacity,Dimensions, Image, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRoute } from '@react-navigation/native';
+import Bg from './assets/myAllergyImg/header-img.svg';
 
 import PlusSquare from'./assets/img/PlusSquare.svg'
 import Footer from './components/footer.js'
@@ -82,8 +83,8 @@ export default function MyAllergy({ navigation }) {
     <View style={styles.container}>
     <LinearGradient colors={['#51CE54', '#0D7FFB']} style={styles.gradient}>
     <View>
-      
-          <Image source={require('./assets/myAllergyImg/header-img.png')} style = {styles.headerImg}></Image>
+
+          <Bg />
           <View style = {styles.logo}>
             <LogoSvg />
             <Text style = {styles.h2Text}>자신의 알러지</Text>

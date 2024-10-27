@@ -5,6 +5,7 @@ import { Text, View, StyleSheet, TouchableOpacity, Modal, Image, TouchableWithou
 import { LinearGradient } from 'expo-linear-gradient'; // 그라데이션 배경을 위한 컴포넌트
 import { useNavigation, useRoute } from '@react-navigation/native'; // 네비게이션을 위한 훅
 
+import Bg from './assets/cameraImg/header-img.svg';
 import Footer from './components/footer.js'
 import MiniCamera from './assets/img/MiniCamera.svg';
 import RecordSave from './assets/img/RecordSave.svg';
@@ -166,7 +167,7 @@ export default function Jnformation() {
                 style={styles.gradient}
             >
                 <View>
-                    <Image style={styles.headerImg} source={require('./assets/cameraImg/header-img.png')} />
+                    <Bg />
                     <Text style={styles.title}>음식 정보</Text>
                 </View>
                 <View style={styles.main}>

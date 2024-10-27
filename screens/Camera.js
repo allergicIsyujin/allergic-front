@@ -7,6 +7,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
 
+import Bg from './assets/cameraImg/header-img.svg';
 import Footer from './components/footer.js';
 import MiniCamera from './assets/img/MiniCamera.svg';
 import Check from './assets/img/Check.svg';
@@ -75,7 +76,7 @@ export default function Camera() {
     return (
         <View style={styles.container}>
             <LinearGradient colors={['#51CE54', '#0D7FFB']} style={styles.gradient}>
-                <Image style={styles.headerImg} source={require('./assets/cameraImg/header-img.png')} />
+            <Bg />
                 {imageUri && (
                     <Image
                         source={{ uri: imageUri }}

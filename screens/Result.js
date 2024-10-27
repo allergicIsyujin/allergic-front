@@ -7,6 +7,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import Footer from './components/footer.js'
 import SearchSvg from './assets/img/MiniSearch.svg';
 import MiniCamera from './assets/img/MiniCamera.svg';
+import Bg from './assets/recordImg/header-img.svg';
 
 export default function Result() {
   const route = useRoute();
@@ -31,7 +32,7 @@ export default function Result() {
     <View style={styles.container}>
       <LinearGradient colors={[back,back]} style={styles.gradient}>
         <View>
-          <Image style={styles.headerImg} source={require('./assets/recordImg/header-img.png')} />
+          <Bg />
           <Text style={styles.title}>음식 정보</Text>
         </View>
         <View style={styles.main}>
