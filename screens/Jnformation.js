@@ -90,7 +90,9 @@ export default function Jnformation() {
 
     const save = () => {
         // 이미지를 서버에 저장 요청
-        fetch(`http://${IP}/image/saveImage?userId=${encodeURIComponent(userId)}`)
+        const today = new Date().toISOString().split('T')[0];  //오늘 날짜와 시간 분 나타냄    예: "YYY-MM-DD"
+        // 이미지를 서버에 저장 요청
+        fetch(`http://${IP}/image/saveImage?userId=${encodeURIComponent(userId)}&today=${today}`)
             .then(response => response.json())
             .then(json => {
                 navigation.navigate('Record');

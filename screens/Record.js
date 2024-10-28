@@ -32,7 +32,9 @@ export default function Record() {
                   backgroundColor: json[a++].backgroundColor ? "#51CE54" : "#FF4444", 
                   image: item.image,
                   description: item.description,
-                  ingredient:item.ingredient
+                  ingredient:item.ingredient,
+                  calo:item.calo,
+                  today:item.today
               }))
           ]);
         // console.log(foodList[0].backgroundColor)//이쪽에서 에러뜸
