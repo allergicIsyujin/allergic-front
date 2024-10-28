@@ -27,7 +27,7 @@ export default function App() {
     <UserContext.Provider value={{ userId, settingId }}>
     <IPContext.Provider value={{IP, settingIP}}>
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="MainPage">
+      <Stack.Navigator initialRouteName="BeforeMain">
       <Stack.Screen
           name='Login'
           component={Login}
