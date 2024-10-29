@@ -6,7 +6,7 @@ import { LinearGradient } from 'expo-linear-gradient'; // 그라데이션 배경
 import { useNavigation, useRoute } from '@react-navigation/native'; // 네비게이션을 위한 훅
 
 import Bg from './assets/cameraImg/header-img.svg';
-import Footer from './components/footer.js';
+import Footer from './components/footer.js'
 import MiniCamera from './assets/img/MiniCamera.svg';
 import RecordSave from './assets/img/RecordSave.svg';
 import Loading from './roading.js';
@@ -59,9 +59,9 @@ export default function Jnformation() {
                         }),
                     });
                     const json = await response.json();
-                    console.log(json);
+                    console.log(json)
                     setFoodName(json.result.foodName); // 음식 이름 설정
-
+                    console.log(foodName)
                     // "ok" 값에 따라 배경색 설정
                     if (json.result.ok === "O") {
                         setBackgroundColor(1);
@@ -90,8 +90,9 @@ export default function Jnformation() {
     }, [photoUrl, IP, userId]); // photoUrl, IP, userId가 변경될 때마다 이 효과 실행
 
     const save = () => {
-        const today = new Date().toISOString().split('T')[0]; // 오늘 날짜 형식 "YYYY-MM-DD"
-        
+        // 이미지를 서버에 저장 요청
+        // 이미지를 서버에 저장 요청
+        const today = new Date().toISOString().split('T')[0];  //오늘 날짜와 시간 분 나타냄    예: "YYY-MM-DD"
         // 이미지를 서버에 저장 요청
         fetch(`http://${IP}/image/saveImage?userId=${encodeURIComponent(userId)}&today=${today}`)
             .then(response => response.json())
@@ -111,7 +112,7 @@ export default function Jnformation() {
                 image: photoUrl,
                 description: descriptions,
                 foodName: foodName,
-                backgroundColor: backgroundColor,
+                backgroundColor: backgroundColor
             },
         ];
 
@@ -152,7 +153,7 @@ export default function Jnformation() {
                                         </View>
                                     </View>) :
                                     (<View style={styles.IconBox}>
-                                        <BigNo />
+                                        <BigNo  />
                                         <Text style={styles.modalText}>먹으면 위험해요!</Text>
                                         <View>
                                             <Text style={styles.text}>많이 사용되는 레시피를 기준으로 만들었습니다</Text>
@@ -188,7 +189,7 @@ export default function Jnformation() {
                                     key={item.id}
                                     style={[
                                         styles.allergy,
-                                        notIngredients.includes(item.name) && { color: 'red' }, // notIngredients가 포함된 경우 빨간색으로 표시
+                                        notIngredients.includes(item.name) && { color: 'red' } // notIngredients가 포함된 경우 빨간색으로 표시
                                     ]}
                                 >
                                     {item.name}
@@ -197,21 +198,22 @@ export default function Jnformation() {
                         </View>
                     </View>
                     <View style={styles.buttonBox}>
-                        <TouchableOpacity
-                            style={styles.button1}
-                            onPress={() => navigation.goBack()} // 이전 화면으로 이동
-                            activeOpacity={0.9}
-                        >
-                            <MiniCamera />
-                            <Text style={styles.buttonText}>다시 촬영하기</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.button2} onPress={() => save()}>
-                            <RecordSave />
-                            <Text style={styles.buttonText}>기록 저장하기</Text>
-                        </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.button1}
+                        onPress={() => navigation.goBack()} // 이전 화면으로 이동
+                        activeOpacity={0.9}
+                    >
+                        <MiniCamera />
+                        <Text style={styles.buttonText}>다시 촬영하기</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.button2} onPress={() => save()}>
+                        <RecordSave />
+                        <Text style={styles.buttonText}>기록 저장하기</Text>
+                    </TouchableOpacity>
                     </View>
+                    
                 </View>
-                <Footer home={false} allergy={false} camera={true} record={false} />
+                <Footer home = {false} allergy = {false} camera = {true} record = {false}/>
             </LinearGradient>
         </View>
     );
@@ -219,36 +221,123 @@ export default function Jnformation() {
 
 const styles = StyleSheet.create({
     darkOverlay: {
-        width: '100%',
-        height: '100%',
+        width:'100%',
+        height:'100%',
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    modalContent: {
-        width: 312,
-        height: 295,
-        borderRadius: 24,
         justifyContent: 'center',
         alignItems: 'center',
-        padding: 10,
-    },
-    IconBox: {
-        justifyContent: 'center',
+      },
+      modalContent: {
+        backgroundColor: '#fff',
+        width:'78%',
+        height: '30%',
+        flexDirection: 'column',
+        borderRadius: 10,
         alignItems: 'center',
-    },
-    modalText: {
-        fontSize: 24,
+        justifyContent:'center',
+        alignContent:'center'
+      },
+      modalText: {
+        color:'white',
+        marginTop: '11%',
+        marginBottom: '8%',
+        fontSize: 22,
         fontWeight: '700',
-        color: 'white',
-        marginTop: 5,
-        textAlign: 'center',
+      },
+      text:{
+        color:'white',
+        textAlign:'center'
+      },
+      title: {
+        color: '#FFFFFF',
+        fontSize: 25,
+        position: 'absolute',
+        top: '60%',
+        left: '38.5%',
+        fontWeight: '700',
+      },
+      IconBox:{
+        alignItems:'center',
+      },
+    container: {
+        flex: 1,
     },
-    text: {
-        fontSize: 12,
-        fontWeight: '400',
+    gradient: {
+        flex: 1,
+    },
+    headerImg: {
+        width: '100%',
+        resizeMode: 'cover',
+    },
+    main: {
+        flex: 1,
+        alignItems: 'center',
+        backgroundColor:'white',
+        borderTopRightRadius:80
+    },
+    foodImg: {
+        width: '100%',
+        height: 400,
+        resizeMode: 'cover',
+        borderTopRightRadius:80
+    },
+    foodBox: {
+        zIndex:10,
+        width:'88%',
+    },
+    foodName: {
+        marginTop: '3%',
+        fontSize: 22,
+        fontWeight: 'bold',
+        color: 'black',
+        marginBottom: '3%',
+    },
+    foodData: {
+        marginTop: '3%',
+    },
+    allergy: {
+        fontSize: 16,
+        color: 'black',
+    },
+    buttonBox:{
+        zIndex:10,
+        flex:1,
+        flexDirection:'row',
+        justifyContent:'space-around',
+        width:'90%',
+        marginLeft:'5%',
+        position:'absolute',
+        bottom:'15%',
+    
+    },
+    button1: {
+        width: 150,
+        padding: 10,
+        backgroundColor: '#0075FF',
+        justifyContent: 'space-around',
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderRadius: 10,
+        zIndex: 1
+    },
+    button2: {
+        width: 150,
+        padding: 10,
+        backgroundColor: '#0075FF',
+        justifyContent: 'space-around',
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderRadius: 10,
+        zIndex: 1
+    },
+    image: {
+        width: '100%',
+        height: '50%',
+        marginTop: '10%',
+    },
+    buttonText: {
         color: 'white',
-        marginTop: 2,
-        textAlign: 'center',
+        fontWeight: '600',
+        fontSize: 16,
     },
 });
