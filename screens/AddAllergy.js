@@ -10,6 +10,7 @@ import PlusSquare from './assets/img/PlusSquare.svg'
 import Arrow_back from './assets/img/arrow_back.svg'
 import CheckSave from './assets/img/CheckSave.svg'
 import Btn from './components/Button.js'
+import Bg from './assets/addAllergyImg/header-img.svg';
 
 export default function AddAllergy() {
   const [id, setId] = useState('');
@@ -229,7 +230,7 @@ export default function AddAllergy() {
 
       <LinearGradient colors={['#51CE54', '#0D7FFB']} style={styles.gradient}>
         <View>
-          <Image style={styles.headerImg} source={require('./assets/addAllergyImg/header-img.png')} />
+          <Bg />
           <Text style={styles.title}>알러지등록</Text>
         </View>
         <View style={styles.main}>
