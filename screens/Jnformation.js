@@ -1,13 +1,13 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useId } from 'react';
 import { UserContext } from '../contexts.js'; // 유저 정보를 관리하는 컨텍스트
 import { IPContext } from '../contexts.js'; // 서버 IP 주소를 관리하는 컨텍스트
-import { Text, View, StyleSheet, TouchableOpacity, Modal, Image, TouchableWithoutFeedback } from 'react-native'; // React Native에서 사용하는 기본 컴포넌트
+import { Text, View, StyleSheet,TextInput,  TouchableOpacity, Modal, Image, TouchableWithoutFeedback } from 'react-native'; // React Native에서 사용하는 기본 컴포넌트
 import { LinearGradient } from 'expo-linear-gradient'; // 그라데이션 배경을 위한 컴포넌트
 import { useNavigation, useRoute } from '@react-navigation/native'; // 네비게이션을 위한 훅
 
 import Bg from './assets/cameraImg/header-img.svg';
 import Footer from './components/footer.js'
-import MiniCamera from './assets/img/MiniCamera.svg';
+import Retouch from './assets/img/retouch.svg';
 import RecordSave from './assets/img/RecordSave.svg';
 import Loading from './roading.js';
 import BigYes from './assets/img/bigYes.svg';
@@ -26,6 +26,21 @@ export default function Jnformation() {
     const [loading, setLoading] = useState(true);
     const [isModalVisible, setIsModalVisible] = useState(true);
 
+    const [isRetake, setIsRetake] = useState(false);
+    const [text, setText] = useState('');
+    const getBase64 = async (url) => {
+        const response = await fetch(url);
+        const blob = await response.blob();
+        const reader = new FileReader();
+        return new Promise((resolve, reject) => {
+            reader.onloadend = () => {
+                const base64 = reader.result.split(',')[1]; // base64 부분 추출
+                resolve(base64);
+            };
+            reader.onerror = reject;
+            reader.readAsDataURL(blob);
+        });
+    };
     useEffect(() => {
         // 이미지 URL을 base64로 변환하는 함수
         const getBase64 = async (url) => {
@@ -127,10 +142,52 @@ export default function Jnformation() {
         setIsModalVisible(false);
     };
 
+    const Retake = ()=>{
+        setIsRetake(!isRetake);
+    }
     if (loading) {
         return <Loading style={styles.view} />;
     }
+    const feedback = async ()=>{
+        const base64Image = await getBase64(photoUrl);
+        setLoading(true); 
+            try{
+                const response = await fetch(`http://${IP}/image/feedback`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        userId: userId,
+                        Base64: base64Image, // base64 이미지 포함
+                        foodName: text
+                    }),
+                });
+                setIsRetake(false)
+                const json = await response.json();
+                    console.log(json)
+                    setFoodName(json.result.foodName); // 음식 이름 설정
+                    console.log(foodName)
+                    // "ok" 값에 따라 배경색 설정
+                    if (json.result.ok === "O") {
+                        setBackgroundColor(1);
+                    } else {
+                        setBackgroundColor(0);
+                    }
 
+                    // 재료 목록과 제외 재료 목록 설정
+                    const updatedDescriptions = json.result.ingredients.map((ingredient, index) => ({
+                        id: index + 1, // 고유 ID 부여
+                        name: ingredient,
+                    }));
+                    setDescriptions(updatedDescriptions); // 재료 목록 업데이트
+                    setNotIngredients(json.result.notIngredients || []); // 제외 재료 목록 업데이트, 기본값은 빈 배열
+                    setLoading(false);
+            }catch(error){
+                console.log(error);
+            }
+        
+    }
     return (
         <View style={styles.container}>
             <Modal
@@ -166,6 +223,31 @@ export default function Jnformation() {
                     </View>
                 </TouchableWithoutFeedback>
             </Modal>
+            {isRetake ? <Modal
+        transparent={true}
+        visible={isRetake}
+        onRequestClose={Retake}
+        animationType="fade"
+      >
+        <TouchableWithoutFeedback onPress={Retake}>
+          <View style={styles.darkOverlay}>
+            <TouchableWithoutFeedback>
+              <View style={styles.modalContent}>
+                <Text style={styles.modalText}>음식 수정하기</Text>
+                <TextInput
+                  style={styles.textInput}
+                  value={text}
+                  onChangeText={setText}
+                  placeholder="여기에 텍스트를 입력하세요"
+                />
+                <TouchableOpacity onPress={feedback} style={styles.LastAddButton}>
+                  <Text style={styles.addText}>검색하기</Text>
+                </TouchableOpacity>
+              </View>
+            </TouchableWithoutFeedback>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal> : null}
             <LinearGradient
                 colors={backgroundColor === 1 ? ['#51CE54', '#0D7FFB'] : ['#FF4444', '#FF4444']}
                 style={styles.gradient}
@@ -200,11 +282,10 @@ export default function Jnformation() {
                     <View style={styles.buttonBox}>
                     <TouchableOpacity
                         style={styles.button1}
-                        onPress={() => navigation.goBack()} // 이전 화면으로 이동
-                        activeOpacity={0.9}
+                        onPress={Retake} 
                     >
-                        <MiniCamera />
-                        <Text style={styles.buttonText}>다시 촬영하기</Text>
+                        <Retouch />
+                        <Text style={styles.buttonText}>음식이 틀렸다면?</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.button2} onPress={() => save()}>
                         <RecordSave />
@@ -220,6 +301,52 @@ export default function Jnformation() {
 }
 
 const styles = StyleSheet.create({
+    modalText: {
+        marginBottom: '8%',
+        color:"black",
+        fontSize: 16,
+        fontWeight: '700',
+      },
+    LastAddButton: {
+        backgroundColor: '#0075FF',
+        borderRadius: 10,
+        paddingVertical: '3%',
+        paddingHorizontal: '20%',
+      },
+      addText: {
+        color: 'white',
+      },
+    textInput: {
+        height: 40,
+        borderColor: 'gray',
+        borderWidth: 1,
+        width: '80%',
+        paddingHorizontal: '5%',
+        marginBottom: '8%',
+        borderRadius: 10,
+      },
+    darkOverlay: {
+        width: '100%',
+        height: '100%',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        justifyContent: 'center',
+        alignItems: 'center',
+      },
+      modalContent: {
+        backgroundColor: '#fff',
+        width: '78%',
+        paddingBottom:40,
+        paddingTop:40,
+        display: 'flex',
+        flexDirection: 'column',
+        borderRadius: 10,
+        alignItems: 'center',
+      },
+      modalText: {
+        marginBottom: '8%',
+        fontSize: 16,
+        fontWeight: '700',
+      },
     darkOverlay: {
         width:'100%',
         height:'100%',
@@ -277,7 +404,7 @@ const styles = StyleSheet.create({
     },
     foodImg: {
         width: '100%',
-        height: 400,
+        height: 370,
         resizeMode: 'cover',
         borderTopRightRadius:80
     },
@@ -294,10 +421,14 @@ const styles = StyleSheet.create({
     },
     foodData: {
         marginTop: '3%',
+        display:'flex',
+        flexDirection:'row',
+        flexWrap:'wrap',
     },
     allergy: {
         fontSize: 16,
         color: 'black',
+        marginRight:10
     },
     buttonBox:{
         zIndex:10,
@@ -311,7 +442,7 @@ const styles = StyleSheet.create({
     
     },
     button1: {
-        width: 150,
+        width: 170,
         padding: 10,
         backgroundColor: '#0075FF',
         justifyContent: 'space-around',
