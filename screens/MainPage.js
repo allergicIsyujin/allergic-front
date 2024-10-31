@@ -11,11 +11,16 @@ import ReTake from './assets/img/Retake.svg';
 import SearchSvg from './assets/img/find.svg'
 import { useNavigation } from '@react-navigation/native';
 import Loading from './roading.js'
-
+import Bg from './assets/img/background.svg';
+import GuideX from './assets/homeImg/guideX.svg';
+import GuidePlus from './assets/homeImg/guidePlus.svg';
 import Yes from './assets/img/yes.svg'
 import X from './assets/img/X.svg'
 import No from './assets/img/no.svg'
 import Footer from './components/footer.js'
+import GuideOne from './assets/homeImg/gudieOne.svg';
+import GuideTwo from './assets/homeImg/guideTwo.svg';
+import GuideThree from './assets/homeImg/guideThree.svg';
 
 const { width, height } = Dimensions.get('window');
 
@@ -29,38 +34,56 @@ export default function MainPage() {
   const [description, setdescription] = useState([]);
   const [notIngredients, setNotIngredients] = useState([]);
  const [loading, setLoading] =useState(false);
-  
-  async function openai_say(foodname){
-    try{
-      const respond = await fetch(`http://${IP}/openAI/say`,{
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          id: userId,
-          food: foodname
-        })
+ const [isGuide1, setIsGuide1] = useState(false);
+ const [isGuide2, setIsGuide2] = useState(false);
+ const [isGuide3, setIsGuide3] = useState(false);
+ 
+ const guideani = (id)=>{
+  setIsGuide1(false)
+  setIsGuide2(false)
+  setIsGuide3(false)
+  if(id === 1) setIsGuide1(!isGuide1)
+  else if(id===2) setIsGuide2(!isGuide2)
+  else if(id===3) setIsGuide3(!isGuide3)
+ }
+ 
+ const [isGuideline, setIsGuideline] = useState(false);
+ const Guideline = ()=>{
+   setIsGuideline(!isGuideline);
+ }
+ 
+ 
+ async function openai_say(foodname){
+  try{
+    const respond = await fetch(`http://${IP}/openAI/say`,{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        id: userId,
+        food: foodname
       })
-      .then(setLoading(true))
-      if (!respond.ok) {
-        throw new Error(`HTTP error! Status: ${respond.status}`);
-      }
-      const textResponse = await respond.json(); // 응답 본문을 문자열로 읽기
-      
-      setselectIcon(
-        textResponse.ok == 'O' ? true:false
-      )
-      setdescription(textResponse.ingredients); 
-      setsearchExplain(textResponse.description)
-      setNotIngredients(textResponse.notIngredients)
-      console.log(textResponse.ingredients)
-      setLoading(false)
-      return textResponse.ok;
-    } catch (error) {
-      console.error(error);
+    })
+    .then(setLoading(true))
+    if (!respond.ok) {
+      throw new Error(`HTTP error! Status: ${respond.status}`);
     }
+    const textResponse = await respond.json(); // 응답 본문을 문자열로 읽기
+    
+    setselectIcon(
+      textResponse.ok == 'O' ? true:false
+    )
+    setdescription(textResponse.ingredients); 
+    setsearchExplain(textResponse.description)
+    setNotIngredients(textResponse.notIngredients)
+    console.log(textResponse.ingredients)
+    setLoading(false)
+    return textResponse.ok;
+  } catch (error) {
+    console.error(error);
   }
+}
   const [isModalVisible, setIsModalVisible] = useState(false);
   const showModal = () => { //알러지 추가하기를 눌렀을때 검은화면보여주기
     setIsModalVisible(true);
@@ -72,12 +95,10 @@ export default function MainPage() {
   if (loading) {
     return <Loading  style={styles.view}/>;
   }
-
+  
   return (
                        
     <View style={{flex:1}}>
-      
-    
       <LinearGradient style={styles.container} colors={['#51CE54', '#0D7FFB']}>
       <StatusBar style="auto" />
       {isModalVisible ? (<Modal
@@ -132,8 +153,58 @@ export default function MainPage() {
           </View>
         </TouchableWithoutFeedback>
       </Modal>) : (null)}
-          <ImageBackground style={styles.backgroundImg} source={require('./assets/img/background.png')} resizeMode="cover">
-          </ImageBackground>
+      {isGuideline ? 
+      <Modal 
+      transparent={true}
+        visible={isGuideline}
+        onRequestClose={Guideline}
+        animationType="fade"
+      >
+          <TouchableWithoutFeedback onPress={Guideline}>
+          <View style={styles.darkOverlay}>
+            <TouchableWithoutFeedback>
+              <View style={[styles.modalContent, styles.guide]}>
+              <TouchableWithoutFeedback onPress={Guideline}>
+                <X style={styles.xSvg}/>
+                </TouchableWithoutFeedback>
+
+              <TouchableOpacity style={styles.guideBox} onPress={()=>guideani(1)}>
+                <View style={styles.guideTitleBox}>
+                  <Text style={styles.guideTitleText}>1. 자신의 알러지 등록하기</Text>
+                  {isGuide1 ? <GuideX /> : <GuidePlus /> }
+                </View>
+                <Text>알러지등록을 누르시고 자신의 알러지를 등록해주세요</Text>
+                {isGuide1 ? <GuideOne /> : null}
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.guideBox} onPress={()=>guideani(2)}>
+                <View style={styles.guideTitleBox}>
+                  <Text style={styles.guideTitleText}>2. 음식 촬영하기</Text>
+                  {isGuide2 ? <GuideX /> : <GuidePlus /> }
+                </View>
+                <Text>카메라 모양의 알러지 검색을 누르시고 음식을 촬영해주세요</Text>
+                {isGuide2 ? <GuideTwo /> : null}
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.guideBox} onPress={()=>guideani(3)}>
+                <View style={styles.guideTitleBox}>
+                  <Text style={styles.guideTitleText}>3. 결과</Text>
+                  {isGuide3 ? <GuideX /> : <GuidePlus /> }
+                </View>
+                <Text>분석이 끝난 결과를 받아 먹을 수 없는 음식이라면 성분을 빨간색으로 표시해줍니다.</Text>
+                {isGuide3 ? <GuideThree /> : null}
+              </TouchableOpacity>
+              </View>
+              </TouchableWithoutFeedback>
+              </View>
+              </TouchableWithoutFeedback>
+      </Modal> : null}
+      <View style={styles.backgroundImg}>
+        <Bg />
+      </View>
+      <View style={styles.BgUnbox}>
+      </View>
+      <TouchableOpacity style={styles.guidelines} onPress={Guideline}>
+        <Text style={styles.guidelinesText}>?</Text>
+      </TouchableOpacity>
           <View style={[styles.logo, { height: 62 }]}>
             <LogoSvg height={62}></LogoSvg>
             <Text style={styles.logoText}>Allergic</Text>
@@ -181,13 +252,14 @@ export default function MainPage() {
                               />
                             </View>
                            
-                      
+                      { text.length > 0 ? 
                       <TouchableOpacity
                         // 글자 삭제
                         onPress={()=>{setText('')}}
                       >
                       <Image source={require('./assets/img/X.png')}/>{/* class="smallImg" id="inputDelete" */}
-                      </TouchableOpacity>
+                      </TouchableOpacity> : null
+                      }
                   </View>
               </View>
           </View>
@@ -204,6 +276,43 @@ export default function MainPage() {
 
 
 const styles = StyleSheet.create({
+  guideBox:{
+    marginBottom:20
+  },
+  guide:{
+    width:'87%',
+    padding:20,
+    paddingTop:50,
+    paddingBottom:30
+  },
+  guideTitleBox:{
+    display:'flex',
+    flexDirection:'row',
+    justifyContent:'space-between',
+    alignContent:'center',
+    alignItems:'center'
+  },
+  guideTitleText:{
+    fontSize:18,
+    fontWeight:'700'
+  }, 
+  guidelinesText:{
+    fontSize:20,
+    fontWeight:'600'
+  },
+  guidelines:{
+    display:'flex',
+    justifyContent:'center',
+    alignContent:'center',
+    alignItems:'center',
+    width:40,
+    height:40,
+    backgroundColor:'#FFFFFF',
+    borderRadius:100,
+    position:'absolute',
+    right:20,
+    top:50
+  },
   text:{
     fontWeight:'700',
     textAlign:'center',
@@ -255,6 +364,9 @@ const styles = StyleSheet.create({
     top:20,
     right:20
   },
+  BgUnbox:{
+    height:'36%'
+  },
   noBox:{
     marginTop:50,
     marginLeft:20,
@@ -274,8 +386,7 @@ const styles = StyleSheet.create({
     position:'relative'
   },
   backgroundImg: {
-    height:'110%',
-    flex:1,
+    position:'absolute'
   },
   unMainBox:{
     width:'100%',

@@ -3,10 +3,11 @@ import { UserContext } from '../contexts.js';
 import { Text, View, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation, useRoute } from '@react-navigation/native';
-
+import Arrow_back from './assets/img/arrow_back.svg'
 import Footer from './components/footer.js'
 import SearchSvg from './assets/img/MiniSearch.svg';
 import MiniCamera from './assets/img/MiniCamera.svg';
+import Bg from './assets/recordImg/header-img.svg';
 
 export default function Result() {
   const route = useRoute();
@@ -16,7 +17,7 @@ export default function Result() {
 
   // 식품 ID로 상세정보 찾기
   const foodDetail = foodList.find(item => item.id === foodId) || {};
-  const { description = [], ingredient = [], image, name, backgroundColor } = foodDetail;
+  const { description = [], ingredient = [], image, name, backgroundColor ,calo,today} = foodDetail;
 
   // 결과 화면에서 보여줄 음식의 설명을 포함된 알러지 재료가 빨간색으로 표시할 수 있도록 스타일링
   const getDescriptionStyle = (desc) => {
@@ -25,16 +26,21 @@ export default function Result() {
   };
    let back=foodList[foodId-1].backgroundColor
   // backgroundColor가 배열이 아닌 경우 처리
+  const backToTheFuture=()=>{
+    
+  }
   
   console.log(foodId)
   return (
     <View style={styles.container}>
       <LinearGradient colors={[back,back]} style={styles.gradient}>
         <View>
-          <Image style={styles.headerImg} source={require('./assets/recordImg/header-img.png')} />
+          <Bg />
           <Text style={styles.title}>음식 정보</Text>
         </View>
+        
         <View style={styles.main}>
+          
           <Image source={{ uri: image }} style={styles.foodImg} />
           <View style={styles.foodBox}>
             <Text style={styles.foodName}>{name}</Text>
@@ -46,6 +52,15 @@ export default function Result() {
               )):<Text>재료없음</Text>}
             </ScrollView>
           </View>
+          <Text  style={styles.calo}>{calo}kcal</Text>
+          <Text style={styles.today}>{today}</Text>
+          <TouchableOpacity
+          style={styles.back}
+          onPress={() => navigation.goBack()} // 이전 페이지로 이동
+          activeOpacity={0.9}
+          >
+            <Arrow_back />
+          </TouchableOpacity>
           <TouchableOpacity style={styles.button1} onPress={() => navigation.navigate('Camera')} activeOpacity={0.9}>
             <MiniCamera />
             <Text style={styles.buttonText}>요리 촬영하기</Text>
@@ -88,8 +103,11 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   foodImg: {
-    width: '100%',
-    height: 380,
+    marginLeft:19,
+    marginTop:70,
+    width: '89%',
+    height: 280,
+    borderRadius:10
   },
   foodData: {
     flexDirection: 'row',
@@ -117,7 +135,7 @@ const styles = StyleSheet.create({
   button1: {
     position: 'absolute',
     left: 30,
-    bottom: 110,
+    bottom: 150,
     width: 150,
     padding: 10,
     backgroundColor: '#0075FF',
@@ -134,7 +152,7 @@ const styles = StyleSheet.create({
   button2: {
     position: 'absolute',
     left: 190,
-    bottom: 110,
+    bottom: 150,
     width: 150,
     padding: 10,
     alignItems: 'center',
@@ -142,5 +160,21 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     flexDirection: 'row',
     borderRadius: 10,
+  },
+  calo: {
+    fontSize: 20,
+    fontWeight: '500',
+    left:270,
+    bottom:55
+  },
+  today: {
+    fontSize: 15,
+    fontWeight: '300',
+    left:250,
+    bottom:410
+  },
+  back: {
+    bottom:450,
+    left:12
   },
 });
